@@ -1,0 +1,31 @@
+# ==================================
+# General
+# ==================================
+.DS_Store
+.idea/
+*.log
+
+# ==================================
+# For Web Frontend (Vite/Vue)
+# ==================================
+vue3-demo/node_modules/
+vue3-demo/dist/
+vue3-demo/.env.local
+vue3-demo/.env.*.local
+vue3-demo/npm-debug.log*
+vue3-demo/yarn-debug.log*
+vue3-demo/yarn-error.log*
+
+# ==================================
+# For Backend (Spring Boot/Maven)
+# ==================================
+demo/target/
+demo/build/
+demo/*.iml
+
+# ==================================
+# For Mini Program
+# ==================================
+wx-demo-js-template/node_modules/
+wx-demo-js-template/miniprogram_npm/
+wx-demo-js-template/project.private.config.json
