@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+const Apps = () => import('@/views/AppsView.vue')
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+export default createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', redirect: '/apps' },
+    { path: '/apps', name: 'apps', component: Apps },
+  ],
 })
-
-export default router
