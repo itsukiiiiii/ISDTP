@@ -8,6 +8,8 @@ import java.util.List;
 public interface AppMapper {
     // 查询所有应用，按 ID 升序排列
     List<AppEntity> findAllOrderById();
+    List<AppEntity> findAll(String sortBy, String order);
+
 
     // 根据 ID 查询单个应用
     AppEntity findById(Long id);

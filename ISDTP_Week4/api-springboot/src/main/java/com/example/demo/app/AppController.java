@@ -1,6 +1,5 @@
 package com.example.demo.app;
 
-
 import com.example.demo.common.ApiResponse;
 import com.example.demo.app.vo.AppVO;
 import com.example.demo.app.entity.AppEntity;
@@ -18,11 +17,25 @@ public class AppController {
     }
 
     @GetMapping
-    public ApiResponse<List<AppVO>> list() {
-        // 使用 MyBatis 查询数据库
-        List<AppEntity> entities = appMapper.findAllOrderById();
+    // ================== MODIFICATION START ==================
+    // Step 1: Add @RequestParam to accept 'sortBy' and 'order' from the URL
+    // Example URL: /api/apps?sortBy=rating&order=desc
+    public ApiResponse<List<AppVO>> list(
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String order) {
 
-        // 转换为 VO 对象
+        // Step 2: Add a security check to prevent SQL injection.
+        // Only allow sorting by 'rating' or 'downloads'.
+        if (sortBy != null && !sortBy.equals("rating") && !sortBy.equals("downloads")) {
+            // If an invalid field is passed, set it to null to ignore sorting.
+            sortBy = null;
+        }
+
+        // Step 3: Call a new, more flexible mapper method instead of the old one.
+        List<AppEntity> entities = appMapper.findAll(sortBy, order);
+    // =================== MODIFICATION END ===================
+
+        // The rest of the code for converting to VO remains the same.
         List<AppVO> out = new ArrayList<>();
         for (AppEntity e : entities) {
             AppVO vo = AppVO.builder()
@@ -44,7 +57,7 @@ public class AppController {
         return ApiResponse.ok(out);
     }
 
-    // 新增：根据分类查询应用
+    // This method for searching by category does not need to be changed.
     @GetMapping("/category/{category}")
     public ApiResponse<List<AppVO>> listByCategory(@PathVariable String category) {
         List<AppEntity> entities = appMapper.findByCategory(category);

@@ -25,6 +25,16 @@
         SELECT * FROM t_app ORDER BY id ASC
     </select>
 
+    <select id="findAll" resultType="com.example.demo.app.entity.AppEntity">
+        SELECT
+            *
+        FROM
+            t_app
+        <if test="sortBy != null and sortBy != ''">
+            ORDER BY ${sortBy} ${order}
+        </if>
+    </select>
+
     <!-- 根据 ID 查询 -->
     <select id="findById" resultMap="AppResultMap">
         SELECT * FROM t_app WHERE id = #{id}

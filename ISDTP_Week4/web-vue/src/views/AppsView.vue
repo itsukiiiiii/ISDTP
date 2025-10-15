@@ -17,6 +17,19 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+// ================== 【新增】排序功能 START ==================
+const sortListBy = (field) => {
+  // 使用 JavaScript 的 Array.prototype.sort() 方法进行原地排序
+  // b[field] - a[field] 实现降序（从高到低）排序
+  list.value.sort((a, b) => {
+    // 确保比较的是数字
+    const valA = Number(a[field]) || 0
+    const valB = Number(b[field]) || 0
+    return valB - valA
+  })
+}
+// ================== 【新增】排序功能 END ====================
 </script>
 
 <template>
@@ -26,8 +39,11 @@ onMounted(async () => {
         <h2 class="text-lg font-medium text-slate-900">智能体应用列表</h2>
         <p class="text-sm text-slate-500">轻量卡片栅格，移动优先，自适应多端。</p>
       </header>
-
-      <!-- 加载态 -->
+      
+      <div class="flex items-center gap-x-2">
+        <el-button @click="sortListBy('rating')">按评分排序</el-button>
+        <el-button @click="sortListBy('downloads')">按下载量排序</el-button>
+      </div>
       <el-skeleton v-if="loading" animated :count="6">
         <template #template>
           <div class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -41,13 +57,10 @@ onMounted(async () => {
         </template>
       </el-skeleton>
 
-      <!-- 错误态 -->
       <el-alert v-else-if="error" type="error" :title="error" show-icon />
 
-      <!-- 空态 -->
       <el-empty v-else-if="!list.length" description="暂无应用" />
 
-      <!-- 数据态 -->
       <div v-else class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <AppCard v-for="item in list" :key="item.id" :item="item" />
       </div>
